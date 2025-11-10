@@ -1,0 +1,35 @@
+services:
+  app:
+    container_name: app
+    build:
+      context: .
+    command: "sleep infinity"
+    ports:
+      - "${PORT}:${PORT}"
+    volumes:
+      - .:/usr/src/app
+    networks:
+      - dev-net
+    env_file:
+      - .env.development
+    depends_on:
+      - mongo
+
+  mongo:
+    container_name: mongo
+    image: mongo:6
+    ports:
+      - "${MONGO_PORT}:27017"
+    env_file:
+      - .env.development
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - dev-net
+
+volumes:
+  app:
+  mongo_data:
+
+networks:
+  dev-net:
