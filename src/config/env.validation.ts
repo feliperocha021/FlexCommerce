@@ -16,8 +16,21 @@ const envSchema = z.object({
   }),
   MONGO_INITDB_ROOT_USERNAME: z.string(),
   MONGO_INITDB_ROOT_PASSWORD: z.string(),
-  JWT_SECRET: z.string(),
   MONGO_PORT: z.string().default("27017").transform(Number),
+  JWT_TOKEN_EXPIRESIN: z.string().default("3600").transform(Number),
+  JWT_REFRESH_TOKEN_EXPIRESIN: z.string().default("86400").transform(Number),
+  JWT_SECRET: z.string(),
+  REDIS_HOST: z.string(),
+  REDIS_PORT: z.string().default("6379").transform(Number),
+  REDIS_INSIGHT_PORT: z.string().default("8001").transform(Number),
+  REDIS_URL: z.string().refine((val) => {
+    try {
+      new URL(val);
+      return true;
+    } catch {
+      return false;
+    }
+  }),
   NODE_ENV: z.enum(["development", "test", "production"]).default("development")
 });
 

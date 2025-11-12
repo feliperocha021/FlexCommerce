@@ -27,9 +27,23 @@ services:
     networks:
       - dev-net
 
+  redis-stack:
+    container_name: redis-stack
+    image: redis/redis-stack:latest
+    ports:
+      - "${REDIS_PORT}:6379"
+      - "${REDIS_INSIGHT_PORT}:8001"
+    env_file:
+      - .env.development
+    volumes:
+      - redis-stack-data:/data
+    networks:
+      - dev-net
+
 volumes:
   app:
   mongo_data:
+  redis-stack-data:
 
 networks:
   dev-net:
